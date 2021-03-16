@@ -1,0 +1,73 @@
+.box {
+  border-radius: 20px;
+  /* align-items: center; */
+  display: flex;
+  flex-direction: column;
+  background-color: #263544;
+  background: 191919;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  padding: 40px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+.email-input,
+.password-input,
+.submit-btn {
+  align-items: center;
+  text-align: center;
+  font-weight: lighter;
+  font-size: 19px;
+  width: 250px;
+  /* height: 50px; */
+  margin: 20px auto;
+  background: none;
+  display: block;
+  color: white;
+  border-radius: 30px;
+  border: 2px solid #3498db;
+  text-decoration: none;
+  outline: none;
+  padding: 17px 19px;
+  transition: all 0.25s;
+}
+.email-input:focus,
+.password-input:focus {
+  width: 300px;
+  border-color: #2ecc77;
+}
+.submit-btn {
+  width: 170px;
+  cursor: pointer;
+}
+.submit-btn:hover {
+  background: #2ecc77;
+  border-color: #2ecc77;
+}
+.toggle {
+  display: flex;
+  cursor: pointer;
+  justify-content: space-around;
+}
+.toggle h1 {
+  user-select: none;
+}
+.auth-form {
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  transition: all 0.5s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.active {
+  color: aqua;
+}
