@@ -14,6 +14,7 @@
   transform: translate(-50%, -50%);
 }
 .email-input,
+.username-input,
 .password-input,
 .submit-btn {
   align-items: center;
@@ -34,6 +35,7 @@
   transition: all 0.25s;
 }
 .email-input:focus,
+.username-input:focus,
 .password-input:focus {
   width: 300px;
   border-color: #2ecc77;

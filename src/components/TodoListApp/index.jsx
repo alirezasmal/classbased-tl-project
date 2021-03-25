@@ -1,13 +1,31 @@
 import React, { Component } from 'react';
 import '../../app.css';
-
 import TodoList from './TodoList';
 import Form from './Form';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 class TodoListApp extends Component {
   state = {
     todos: [],
     selectedFilter: 'all',
     filteredTodos: [],
+  };
+  cookies = new Cookies();
+  token = this.cookies.get('token');
+  componentDidMount = async () => {
+    try {
+      const userData = await axios.get(
+        'http://localhost:8000/api/v1/users/me',
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      );
+      console.log(userData.data.data.doc.username);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
   };
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -54,6 +72,7 @@ class TodoListApp extends Component {
           <h1> Your Todo List </h1>
         </header>
         <Form
+          token={this.token}
           todoAddhandler={this.setTodos}
           todos={todos}
           filterOption={selectedFilter}

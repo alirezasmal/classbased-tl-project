@@ -1,6 +1,5 @@
 import React from 'react';
 import Todo from './Todo';
-
 class TodoList extends React.Component {
   render() {
     return (
@@ -9,7 +8,6 @@ class TodoList extends React.Component {
           {this.props.filteredTodos.map((todo) => {
             return (
               <Todo
-                // text={todo.text}
                 key={todo.id}
                 todo={todo}
                 setTodos={this.props.setTodos}

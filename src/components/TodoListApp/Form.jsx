@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import '../../app.css';
 class Form extends Component {
@@ -10,7 +11,7 @@ class Form extends Component {
   };
 
   //* submit handler
-  submitHandler = (event) => {
+  submitHandler = async (event) => {
     event.preventDefault();
     // *errorHandle: Trying to submit empty String
     if (this.state.inputTerm === '') {
@@ -26,6 +27,21 @@ class Form extends Component {
         id: Math.random() * 100,
       },
     ]);
+    // !!!!!!!!!!!!!!!!! wrong db structure
+    await axios.post(
+      'http://localhost:8000/api/v1/todos/',
+      {
+        name: 'todo',
+        isChecked: false,
+        id: Math.random() * 100,
+        description: this.state.inputTerm,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.props.token}`,
+        },
+      }
+    );
     this.setState({ inputTerm: '' });
   };
   // * filter handler
