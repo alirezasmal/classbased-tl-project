@@ -8,7 +8,8 @@ class TodoList extends React.Component {
           {this.props.filteredTodos.map((todo) => {
             return (
               <Todo
-                key={todo.id}
+                token={this.props.token}
+                key={todo._id}
                 todo={todo}
                 setTodos={this.props.setTodos}
                 todos={this.props.todos}

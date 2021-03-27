@@ -38,6 +38,7 @@ class Auth extends React.Component {
       console.log(response);
     } catch (error) {
       console.log(error.response.data.message);
+      return alert(error.response.data.message);
     }
 
     //   axios
@@ -75,6 +76,7 @@ class Auth extends React.Component {
     } catch (error) {
       // errorMessage
       console.log(error.response.data.message);
+      return alert(error.response.data.message);
     }
   };
   render() {

@@ -1,38 +1,115 @@
+import axios from 'axios';
 import React from 'react';
 class Todo extends React.Component {
   // * Event Handlers
 
-  deleteHandler = () => {
-    this.props.setTodos(
-      this.props.todos.filter(
-        (el) => el.id !== this.props.todo.id
-      )
-    );
+  deleteHandler = async () => {
+    try {
+      const deleteTodoData = axios.delete(
+        `http://localhost:8000/api/v1/todos/${this.props.todo._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.props.token}`,
+          },
+        }
+      );
+      console.log(deleteTodoData);
+      this.props.setTodos(
+        this.props.todos.filter(
+          (el) => el._id !== this.props.todo._id
+        )
+      );
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 
-  completeHandler = () => {
-    this.props.setTodos(
-      this.props.todos.map((item) => {
-        if (item.id === this.props.todo.id) {
-          return {
-            ...item,
-            checked: !item.checked,
-          };
+  // completeHandler = async () => {
+  //   this.props.setTodos(
+  //     this.props.todos.map((item) => {
+  //       if (item._id === this.props.todo._id) {
+  //         try {
+  //           const checkItemData = axios.patch(
+  //             `http://localhost:8000/api/v1/todos/id: ${item._id}`,
+  //             {
+  //               headers: {
+  //                 Authorization: `Bearer ${this.props.token}`,
+  //               },
+  //             },
+  //             { isChecked: !item.isChecked }
+  //           );
+  //           console.log(checkItemData);
+  //         } catch (error) {
+  //           // console.log(error.response);
+  //         }
+  //         // return {
+  //         //   ...item,
+  //         //   isChecked: !item.isChecked,
+  //         // };
+  //       }
+  //       return item;
+  //     })
+  //   );
+  // };
+  // ?????????????????????????????? NEW
+  completeHandler = async () => {
+    this.props.todos.forEach((item) => {
+      if (item._id === this.props.todo._id) {
+        try {
+          const checkItemData = axios.patch(
+            `http://localhost:8000/api/v1/todos/${item._id}`,
+            { isChecked: !item.isChecked },
+            {
+              headers: {
+                Authorization: `Bearer ${this.props.token}`,
+              },
+            }
+          );
+          this.props.setTodos(
+            this.props.todos.map((item) => {
+              if (item._id === this.props.todo._id) {
+                return {
+                  ...item,
+                  isChecked: !item.isChecked,
+                };
+              }
+              return item;
+            })
+          );
+          console.log(checkItemData);
+        } catch (error) {
+          console.log(error.response);
         }
-        return item;
-      })
-    );
+      }
+    });
   };
+  // !!
+  // completeHandler = async () => {
+  //   try {
+  //     const checkItemData = axios.patch(
+  //       `http://localhost:8000/api/v1/todos/${this.props.todo._id}`,
+  //       { isChecked: !this.props.todo.isChecked },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${this.props.token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(checkItemData);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
   render() {
     const { todo } = this.props;
     return (
       <div className="todo">
         <li
           className={`todo-item ${
-            todo.checked ? 'completed' : ''
+            todo.isChecked ? 'completed' : ''
           } `}
         >
-          {todo.text}
+          {todo.description}
         </li>
         <button
           onClick={this.completeHandler}

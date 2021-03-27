@@ -7,7 +7,7 @@ import Home from './pages/Home';
 import ProtectedRoute from './ProtectedRoute';
 import Cookies from 'universal-cookie';
 class App extends Component {
-  state = { isAuthenticated: false };
+  state = { isAuthenticated: false, username: '' };
   cookies = new Cookies();
   authHandler = () => {
     this.setState({
@@ -15,8 +15,12 @@ class App extends Component {
     });
     // console.log('called');
   };
+  setUsername = (term) => {
+    this.setState({ username: term });
+  };
   logouthandler = () => {
     this.setState({ isAuthenticated: false });
+    this.setState({ username: '' });
     this.cookies.remove('token');
   };
   componentDidMount = () => {
@@ -33,6 +37,7 @@ class App extends Component {
         <Nav
           logouthandler={this.logouthandler}
           isAuthenticated={this.state.isAuthenticated}
+          username={this.state.username}
         />
         <Switch>
           <Route path="/" exact>
@@ -44,11 +49,17 @@ class App extends Component {
               authHandler={this.authHandler}
             />
           </Route>
-          <ProtectedRoute
+          {/* <ProtectedRoute
             path="/todolist"
             component={TodoListPage}
             auth={this.state.isAuthenticated}
-          />
+          /> */}
+          <ProtectedRoute
+            auth={this.state.isAuthenticated}
+            path="/todolist"
+          >
+            <TodoListPage setUsername={this.setUsername} />
+          </ProtectedRoute>
         </Switch>
       </>
     );

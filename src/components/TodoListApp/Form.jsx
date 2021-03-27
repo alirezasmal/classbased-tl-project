@@ -19,30 +19,44 @@ class Form extends Component {
       return alert('Nothing has been Submitted yet');
     }
     // *submiting A Todo
-    this.props.todoAddhandler([
-      ...this.props.todos,
-      {
-        text: this.state.inputTerm,
-        checked: false,
-        id: Math.random() * 100,
-      },
-    ]);
+    // ! Local method
+    // this.props.todoAddhandler([
+    //   ...this.props.todos,
+    //   {
+    //     description: this.state.inputTerm,
+    //     isChecked: false,
+    //     id: Math.random() * 100,
+    //   },
+    // ]);
     // !!!!!!!!!!!!!!!!! wrong db structure
-    await axios.post(
-      'http://localhost:8000/api/v1/todos/',
-      {
-        name: 'todo',
-        isChecked: false,
-        id: Math.random() * 100,
-        description: this.state.inputTerm,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.props.token}`,
+    try {
+      const addingTodoData = await axios.post(
+        'http://localhost:8000/api/v1/todos/',
+        {
+          name: 'todo',
+          isChecked: false,
+          id: Math.random() * 100,
+          description: this.state.inputTerm,
         },
-      }
-    );
-    this.setState({ inputTerm: '' });
+        {
+          headers: {
+            Authorization: `Bearer ${this.props.token}`,
+          },
+        }
+      );
+      console.log(addingTodoData);
+      this.props.todoAddhandler([
+        ...this.props.todos,
+        {
+          description: this.state.inputTerm,
+          isChecked: false,
+          id: Math.random() * 100,
+        },
+      ]);
+      this.setState({ inputTerm: '' });
+    } catch (error) {
+      console.log(error);
+    }
   };
   // * filter handler
   onFilterChange = (event) => {
@@ -72,7 +86,6 @@ class Form extends Component {
               name="todos"
               className="filter-todo"
               value={this.props.filterOption}
-              //   value="all"
             >
               <option value="all">All</option>
               <option value="uncompleted">Uncompleted</option>

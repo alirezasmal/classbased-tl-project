@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './nav.css';
-const Nav = ({ isAuthenticated, logouthandler }) => {
+const Nav = ({ isAuthenticated, logouthandler, username }) => {
   return (
     <nav>
       <ul className="navbar">
@@ -23,6 +23,14 @@ const Nav = ({ isAuthenticated, logouthandler }) => {
           <Link to="/todolist"> Your TodoList</Link>
         </li>
       </ul>
+      {isAuthenticated && (
+        <div style={{ color: '#101010' }}>
+          Hello dear{' '}
+          <span style={{ fontSize: 'larger', color: 'blue' }}>
+            {username}
+          </span>
+        </div>
+      )}
     </nav>
   );
 };

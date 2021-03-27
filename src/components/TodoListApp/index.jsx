@@ -23,6 +23,8 @@ class TodoListApp extends Component {
         }
       );
       console.log(userData.data.data.doc.username);
+      this.props.setUsername(userData.data.data.doc.username);
+      this.getTodos();
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -33,8 +35,25 @@ class TodoListApp extends Component {
       prevState.selectedFilter !== this.state.selectedFilter
     ) {
       this.filterOptionHandler();
+      // this.getTodos();
     }
   }
+  getTodos = async () => {
+    try {
+      const userTodos = await axios.get(
+        'http://localhost:8000/api/v1/todos',
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      );
+      console.log(userTodos.data.todos);
+      this.setTodos(userTodos.data.todos);
+    } catch (error) {
+      return alert(error.response.data.message);
+    }
+  };
 
   // * changing filter handler
   filterOptionHandler = () => {
@@ -42,14 +61,14 @@ class TodoListApp extends Component {
       case 'uncompleted':
         this.setState({
           filteredTodos: this.state.todos.filter(
-            (todo) => todo.checked === false
+            (todo) => todo.isChecked === false
           ),
         });
         break;
       case 'completed':
         this.setState({
           filteredTodos: this.state.todos.filter(
-            (todo) => todo.checked === true
+            (todo) => todo.isChecked === true
           ),
         });
         break;
@@ -81,6 +100,7 @@ class TodoListApp extends Component {
           }}
         />
         <TodoList
+          token={this.token}
           todos={todos}
           filteredTodos={this.state.filteredTodos}
           setTodos={this.setTodos}
